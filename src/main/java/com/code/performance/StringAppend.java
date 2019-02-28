@@ -3,10 +3,14 @@ package com.code.performance;
 public class StringAppend {
 
     public static void main(String[] args) {
+        test1();
+        test2();
+    }
 
-        String value = "aa" ;
+    private static void test1() {
+        String value = "aa";
         value = value + "bb";
-        System.out.println( value);
+        System.out.println(value);
 
         //Java8 反编译结果:
 /*
@@ -29,6 +33,28 @@ public class StringAppend {
         // 的约束规则的说明,相对来说就变弱了.
         // 同时需要注意的是,多线程情况下还是需要考虑StringBuilder
         // 和StringBuffer的使用场景的.
-
     }
+
+    private static void test2() {
+        // 不推荐;
+        String value = "aa";
+        for (int i = 0; i < 100; i++) {
+            value = value + "bb" + i;
+        }
+        System.out.println(value);
+
+        // 推荐;
+        StringBuilder sbValue = new StringBuilder("aa");
+        for (int i = 0; i < 100; i++) {
+            sbValue.append("bb").append(i);
+        }
+        System.out.println(sbValue);
+
+        // 结论:
+        // 本处字节码就不贴了,可以自己使用javap -c 来反编译看看
+        // 由于Java8提前做了优化, 导致for循环内部每次都会生成一个
+        // StringBuilder对象. 那么就需要开发人员自己来做这个事情
+        // 避免产生过多的字符串变量对象, 对GC产生一定的影响
+    }
+
 }
