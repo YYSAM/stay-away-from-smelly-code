@@ -15,6 +15,8 @@ public class ConstantsInitialization {
     }
 
     // 结论:
+    // aaa 字段的初始化在"链接"阶段就完成了, 直接在常量池初始化成功.
+    // 具体请查看下面字节码中 #9,#10,#11
 
 //   #8 = Utf8               aaa
 //   #9 = Utf8               Ljava/lang/String;
@@ -24,6 +26,7 @@ public class ConstantsInitialization {
 //  #13 = Utf8               ccc
 //  #14 = Utf8               <init>
 
+    // 同时可以在下面代码中看到常量的标识情况:
 
 //    private static final java.lang.String aaa = "aaa";
 //    descriptor: Ljava/lang/String;
